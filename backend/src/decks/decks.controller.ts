@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -15,11 +16,11 @@ import { User } from "@prisma/client";
 import { CreateDeckDto, UpdateDeckDto } from "./dto";
 
 @Controller("decks")
+@UseGuards(JwtAuthGuard)
 export class DeckController {
   constructor(private readonly deckService: DeckService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   async createDeck(
     @Body() createDeckDto: CreateDeckDto,
     @GetUser() user: User
@@ -28,23 +29,20 @@ export class DeckController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async getDecksByUser(@GetUser() user: User) {
     return this.deckService.getDecksByUser(user.id);
   }
 
   @Put(":deckId")
-  @UseGuards(JwtAuthGuard)
   async updateDeck(
-    @Param("deckId") deckId: string,
+    @Param("deckId", ParseIntPipe) deckId: number,
     @Body() updateDeckDto: UpdateDeckDto
   ) {
     return this.deckService.updateDeck(+deckId, updateDeckDto);
   }
 
   @Delete(":deckId")
-  @UseGuards(JwtAuthGuard)
-  async deleteDeck(@Param("deckId") deckId: string) {
+  async deleteDeck(@Param("deckId",ParseIntPipe) deckId: number) {
     return this.deckService.deleteDeck(+deckId);
   }
 }
