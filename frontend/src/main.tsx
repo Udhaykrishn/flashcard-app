@@ -7,12 +7,14 @@ import { NextUIProvider } from "@nextui-org/react";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import { RecoilRoot } from "recoil";
-
+import Cookies from "universal-cookie";
 axios.defaults.baseURL = "http://localhost:3000/";
+
+const cookies = new Cookies();
 
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("access_token");
+    const token = cookies.get("access_token");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

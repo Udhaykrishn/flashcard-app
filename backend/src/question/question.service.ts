@@ -1,15 +1,15 @@
 // question.service.ts
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Question, Prisma } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { Question, Prisma } from "@prisma/client";
 
 @Injectable()
 export class QuestionService {
   constructor(private prisma: PrismaService) {}
 
   async createQuestion(
-    data: Omit<Prisma.QuestionCreateInput, 'deck'>,
-    deckId: number,
+    data: Omit<Prisma.QuestionCreateInput, "deck">,
+    deckId: number
   ): Promise<Question> {
     return this.prisma.question.create({
       data: {
@@ -27,7 +27,7 @@ export class QuestionService {
 
   async updateQuestion(
     questionId: number,
-    data: Prisma.QuestionUpdateInput,
+    data: Prisma.QuestionUpdateInput
   ): Promise<Question> {
     return this.prisma.question.update({
       where: { id: questionId },
@@ -38,6 +38,11 @@ export class QuestionService {
   async deleteQuestion(questionId: number): Promise<Question> {
     return this.prisma.question.delete({
       where: { id: questionId },
+    });
+  }
+  async getQuestionByQuestionId(questionID: number, deckId: number) {
+    return this.prisma.question.findUnique({
+      where: { id: questionID, deckId: deckId },
     });
   }
 }

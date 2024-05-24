@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Cookies from "universal-cookie";
+import { ErrorHandle } from "../components/ErrorHandling";
 
 interface FormData {
   email: string;
@@ -36,19 +37,7 @@ const Login: React.FC = () => {
 
       navigate("/dashboard");
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response && error.response.data.message) {
-          const messages = error.response.data.message;
-          if (Array.isArray(messages)) {
-            messages.forEach((img: string) => toast.error(img));
-          }
-        } else {
-          toast.error("An unexpected error occurred");
-        }
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-      console.error("Error during login:", error);
+      ErrorHandle(error);
     }
   };
 

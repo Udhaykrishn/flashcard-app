@@ -32,17 +32,25 @@ export class DeckController {
   async getDecksByUser(@GetUser() user: User) {
     return this.deckService.getDecksByUser(user.id);
   }
-
+ 
   @Put(":deckId")
   async updateDeck(
     @Param("deckId", ParseIntPipe) deckId: number,
     @Body() updateDeckDto: UpdateDeckDto
   ) {
-    return this.deckService.updateDeck(+deckId, updateDeckDto);
+    return this.deckService.updateDeck(deckId, updateDeckDto);
   }
 
   @Delete(":deckId")
-  async deleteDeck(@Param("deckId",ParseIntPipe) deckId: number) {
-    return this.deckService.deleteDeck(+deckId);
+  async deleteDeck(@Param("deckId", ParseIntPipe) deckId: number) {
+    return this.deckService.deleteDeck(deckId);
+  }
+
+  @Get(":deckId")
+  async getDeckById(
+    @Param("deckId", ParseIntPipe) deckId: number,
+    @GetUser() user: User
+  ) {
+    return this.deckService.getDeckById(user.id, deckId);
   }
 }

@@ -30,7 +30,6 @@ const Navbar: React.FC = () => {
   };
 
   const token = cookies.get("access_token");
-  console.log(user?.name);
 
   return (
     <nav className="bg-gray-800 py-4">

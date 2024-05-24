@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { ErrorHandle } from "../components/ErrorHandling";
 
 interface FormData {
   name: string;
@@ -32,19 +33,7 @@ const SignUp: React.FC = () => {
       console.log(response.data);
       navigate("/auth/login");
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response && error.response.data.message) {
-          const messages = error.response.data.message;
-          if (Array.isArray(messages)) {
-            messages.forEach((msg: string) => toast.error(msg));
-          } else {
-            toast.error(messages);
-          }
-        }
-      } else {
-        toast.error("An unexpected error occurred.");
-      }
-      console.error(error);
+      ErrorHandle(error);
     }
   };
 

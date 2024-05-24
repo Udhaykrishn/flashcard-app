@@ -8,6 +8,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = cookies.get("access_token");
 
   if (!token) {
+    console.log("Not Token");
     return <Navigate to="/auth/login" />;
   }
 

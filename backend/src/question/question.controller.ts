@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -20,27 +21,35 @@ export class QuestionController {
 
   @Post(":deckId")
   async createQuestion(
-    @Param("deckId") deckId: string,
+    @Param("deckId", ParseIntPipe) deckId: number,
     @Body() createQuestionDto: CreateQuestionDto
   ) {
-    return this.questionService.createQuestion(createQuestionDto, +deckId);
+    return this.questionService.createQuestion(createQuestionDto, deckId);
   }
 
   @Get(":deckId")
-  async getQuestionsByDeck(@Param("deckId") deckId: string) {
-    return this.questionService.getQuestionsByDeck(+deckId);
+  async getQuestionsByDeck(@Param("deckId", ParseIntPipe) deckId: number) {
+    return this.questionService.getQuestionsByDeck(deckId);
+  }
+
+  @Get(":questionId/deck/:deckId")
+  async getQuestionByQuestionId(
+    @Param("questionId", ParseIntPipe) questionId: number,
+    @Param("deckId", ParseIntPipe) deckId: number
+  ) {
+    return this.questionService.getQuestionByQuestionId(questionId, deckId);
   }
 
   @Patch(":questionId")
   async updateQuestion(
-    @Param("questionId") questionId: string,
+    @Param("questionId", ParseIntPipe) questionId: number,
     @Body() updateQuestionDto: UpdateQuestionDto
   ) {
-    return this.questionService.updateQuestion(+questionId, updateQuestionDto);
+    return this.questionService.updateQuestion(questionId, updateQuestionDto);
   }
 
   @Delete(":questionId")
-  async deleteQuestion(@Param("questionId") questionId: string) {
-    return this.questionService.deleteQuestion(+questionId);
+  async deleteQuestion(@Param("questionId", ParseIntPipe) questionId: number) {
+    return this.questionService.deleteQuestion(questionId);
   }
 }

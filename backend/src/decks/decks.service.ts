@@ -25,6 +25,12 @@ export class DeckService {
     });
   }
 
+  async getDeckById(userId: number, deckId: number) {
+    return this.prisma.deck.findFirst({
+      where: { ownerId: userId, id: deckId },
+    });
+  }
+
   async updateDeck(
     deckId: number,
     data: Prisma.DeckUpdateInput
@@ -34,10 +40,14 @@ export class DeckService {
       data,
     });
   }
-
+ 
   async deleteDeck(deckId: number): Promise<Deck> {
-    return this.prisma.deck.delete({
-      where: { id: deckId },
-    });
+    try {
+      return this.prisma.deck.delete({
+        where: { id: deckId },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
