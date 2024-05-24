@@ -35,9 +35,13 @@ const Navbar: React.FC = () => {
     <nav className="bg-gray-800 py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div>
-          <Link to="/" className="text-white font-bold text-xl">
-            FlashCards
-          </Link>
+          {!user && !token ? (
+            <Link to="/" className="text-white font-bold text-xl">
+              FlashCards
+            </Link>
+          ) : (
+            <p className="text-white font-bold text-xl">FlashCards</p>
+          )}
         </div>
         <div>
           <ul className="flex space-x-4">
